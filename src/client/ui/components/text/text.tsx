@@ -1,0 +1,62 @@
+import React from "@rbxts/react";
+import { useRem } from "../../hooks";
+
+import { fonts } from "../../constants/fonts";
+import { FrameProps } from "../frame";
+
+/** 文本组件属性接口，支持泛型约束 */
+export interface TextProps<T extends Instance = TextLabel> extends FrameProps<T> {
+	font?: Font;
+	text?: string | React.Binding<string>;
+	textColor?: Color3 | React.Binding<Color3>;
+	textSize?: number | React.Binding<number>;
+	textTransparency?: number | React.Binding<number>;
+	textWrapped?: boolean | React.Binding<boolean>;
+	textXAlignment?: React.InferEnumNames<Enum.TextXAlignment>;
+	textYAlignment?: React.InferEnumNames<Enum.TextYAlignment>;
+	textTruncate?: React.InferEnumNames<Enum.TextTruncate>;
+	textScaled?: boolean | React.Binding<boolean>;
+	textHeight?: number | React.Binding<number>;
+	textAutoResize?: "X" | "Y" | "XY";
+	richText?: boolean | React.Binding<boolean>;
+	maxVisibleGraphemes?: number | React.Binding<number>;
+}
+
+/** 文本组件，支持各种文本格式化和布局选项 */
+export function Text(props: TextProps) {
+	const rem = useRem();
+
+	return (
+		<textlabel
+			Font={Enum.Font.Unknown}
+			FontFace={props.font || fonts.inter.regular}
+			Text={props.text}
+			TextColor3={props.textColor}
+			TextSize={props.textSize ?? rem(1)}
+			TextTransparency={props.textTransparency}
+			TextWrapped={props.textWrapped}
+			TextXAlignment={props.textXAlignment}
+			TextYAlignment={props.textYAlignment}
+			TextTruncate={props.textTruncate}
+			TextScaled={props.textScaled}
+			LineHeight={props.textHeight}
+			RichText={props.richText}
+			MaxVisibleGraphemes={props.maxVisibleGraphemes}
+			Size={props.size}
+			AutomaticSize={props.textAutoResize}
+			Position={props.position}
+			AnchorPoint={props.anchorPoint}
+			BackgroundColor3={props.backgroundColor}
+			BackgroundTransparency={props.backgroundTransparency ?? 1}
+			ClipsDescendants={props.clipsDescendants}
+			Visible={props.visible}
+			ZIndex={props.zIndex}
+			LayoutOrder={props.layoutOrder}
+			Change={props.change || {}}
+			Event={props.event || {}}
+		>
+			{props.cornerRadius && <uicorner key="corner" CornerRadius={props.cornerRadius} />}
+			{props.children}
+		</textlabel>
+	);
+}

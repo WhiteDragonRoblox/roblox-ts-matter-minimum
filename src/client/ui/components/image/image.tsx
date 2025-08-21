@@ -1,0 +1,53 @@
+import React from "@rbxts/react";
+
+import { FrameProps } from "../frame";
+
+/** 图片组件属性接口 */
+export interface ImageProps extends FrameProps<ImageLabel> {
+	image: string;
+	imageColor?: Color3 | React.Binding<Color3>;
+	imageTransparency?: number | React.Binding<number>;
+	imageRectOffset?: Vector2 | React.Binding<Vector2>;
+	imageRectSize?: Vector2 | React.Binding<Vector2>;
+	aspectRatio?: number | React.Binding<number>;
+	scaleType?: React.InferEnumNames<Enum.ScaleType>;
+	sliceScale?: number | React.Binding<number>;
+	sliceCenter?: Rect | React.Binding<Rect>;
+	tileSize?: UDim2 | React.Binding<UDim2>;
+}
+
+/** 图片组件，支持各种图片显示模式和裁剪设置 */
+export function Image(props: ImageProps) {
+	return (
+		<imagelabel
+			Image={props.image}
+			ImageColor3={props.imageColor}
+			ImageTransparency={props.imageTransparency}
+			ImageRectOffset={props.imageRectOffset}
+			ImageRectSize={props.imageRectSize}
+			ScaleType={props.scaleType}
+			SliceScale={props.sliceScale}
+			SliceCenter={props.sliceCenter}
+			TileSize={props.tileSize}
+			Size={props.size}
+			Position={props.position}
+			AnchorPoint={props.anchorPoint}
+			Rotation={props.rotation}
+			BackgroundColor3={props.backgroundColor}
+			BackgroundTransparency={props.backgroundTransparency ?? 1}
+			ClipsDescendants={props.clipsDescendants}
+			Visible={props.visible}
+			ZIndex={props.zIndex}
+			LayoutOrder={props.layoutOrder}
+			BorderSizePixel={0}
+			Event={props.event || {}}
+			Change={props.change || {}}
+		>
+			{props.cornerRadius && <uicorner key="corner" CornerRadius={props.cornerRadius} />}
+			{props.aspectRatio !== undefined && (
+				<uiaspectratioconstraint key="aspect" AspectRatio={props.aspectRatio} />
+			)}
+			{props.children}
+		</imagelabel>
+	);
+}
