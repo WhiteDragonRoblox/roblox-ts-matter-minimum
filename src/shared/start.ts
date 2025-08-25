@@ -1,5 +1,5 @@
 import { Debugger, Loop, World, AnySystem } from "@rbxts/matter";
-import { $env } from "rbxts-transform-env";
+// 移除 rbxts-transform-env 导入
 import { Context, HotReloader } from "@rbxts/rewire";
 import Plasma from "@rbxts/plasma";
 import { Renderable } from "shared/components";
@@ -20,7 +20,7 @@ export function start<S extends object>(
 	state: S,
 ): (...plugins: Array<(world: World, state: S) => void>) => World {
 	const world = new World();
-	const production = $env.string("ENV") === "production";
+	const production = false; // 开发模式
 
 	// 设置调试器
 	const myDebugger = new Debugger(Plasma);
@@ -33,13 +33,8 @@ export function start<S extends object>(
 	};
 
 	myDebugger.authorize = (player: Player): boolean => {
-		const groupId = $env.number("GROUP_ID");
-		const studio = RunService.IsStudio();
-		if (groupId === undefined) {
-			return studio;
-		}
-		const role = player.GetRoleInGroup(groupId);
-		return studio || role === "Admin" || role === "Owner";
+		// 在 Studio 中允许所有玩家，生产环境中可根据需要调整
+		return RunService.IsStudio();
 	};
 
 	// 创建游戏循环

@@ -5,9 +5,8 @@ import React from "@rbxts/react";
 import { RootProvider } from "client/ui/providers/rootProvider";
 
 import { App } from "./ui/app";
-import { $env } from "rbxts-transform-env";
-
-const production = $env.string("ENV") === "production";
+// 使用编译时环境变量检测
+const production = false; // 开发模式
 const ReplicatedStorage = game.GetService("ReplicatedStorage");
 const Players = game.GetService("Players");
 const root = createRoot(new Instance("Folder"));

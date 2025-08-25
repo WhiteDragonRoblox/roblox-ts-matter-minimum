@@ -48,7 +48,9 @@ export const receiveReplication = (world: World, state: ClientState) => {
 
 			for (const [name, container] of componentMap) {
 				if (container.data) {
-					componentsToInsert.push(Components[name](container.data as UnionComponentsMap));
+					// 创建数据的副本以避免只读表错误
+					const dataCopy = { ...container.data } as UnionComponentsMap;
+					componentsToInsert.push(Components[name](dataCopy));
 					insertNames.push(name);
 				} else {
 					componentsToRemove.push(Components[name]);

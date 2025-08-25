@@ -1,11 +1,12 @@
 // 初始化游戏分析客户端
 import { initializeClient } from "@rbxts/gameanalytics";
+import { $env } from "rbxts-transform-env";
 initializeClient();
 import { AnyEntity } from "@rbxts/matter";
 // 设置命令行界面
 import { CmdrClient } from "@rbxts/cmdr";
-CmdrClient.SetActivationKeys([Enum.KeyCode.F2]);
-CmdrClient.SetEnabled(false);
+CmdrClient.SetActivationKeys([Enum.KeyCode.F6]);
+CmdrClient.SetEnabled(true);
 import { start } from "shared/start";
 import { receiveReplication } from "./receiveReplication";
 import { ClientState } from "shared/constants/clientState";

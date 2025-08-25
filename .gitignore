@@ -4,3 +4,4 @@
 *.tsbuildinfo
 .env
 .claude/
+.mcp.json

@@ -37,7 +37,7 @@ export function useButtonState(enabled = true): LuaTuple<[press: boolean, hover:
 	}, []);
 
 	// 触摸设备可能不会触发鼠标离开事件，所以假设所有释放都是鼠标离开。
-	useEventListener(UserInputService.InputEnded, (input) => {
+	useEventListener(UserInputService.InputEnded, (input: InputObject) => {
 		if (input.UserInputType === Enum.UserInputType.Touch) {
 			setTimeout(() => {
 				setState({ press: false, hover: false });

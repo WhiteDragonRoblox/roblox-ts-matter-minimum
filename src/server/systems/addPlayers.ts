@@ -1,5 +1,5 @@
 import { AnyEntity, useEvent, World } from "@rbxts/matter";
-import { $env } from "rbxts-transform-env";
+// 移除 rbxts-transform-env 导入
 import { Client, PlayerState, PlayerAdmin } from "shared/components";
 import { PlayerGameState } from "shared/constants/playerState";
 import { SystemPriority } from "shared/constants/systemPriority";
@@ -22,17 +22,9 @@ const addPlayers = (world: World) => {
 			);
 			(async () => {
 				loadPlayer(playerId as AnyEntity, player, world);
-				const groupId = $env.number("GROUP_ID");
-				const studio = RunService.IsStudio();
-				if (studio) {
+				// 在 Studio 环境中给予管理员权限
+				if (RunService.IsStudio()) {
 					world.insert(playerId as AnyEntity, PlayerAdmin());
-					return;
-				}
-				if (groupId !== undefined) {
-					const role = player.GetRoleInGroup(groupId);
-					if (role === "Admin" || role === "Owner") {
-						world.insert(playerId as AnyEntity, PlayerAdmin());
-					}
 				}
 			})();
 			print("Spawning player", player.Name, "with entity", playerId);

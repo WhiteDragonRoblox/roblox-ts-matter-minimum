@@ -30,7 +30,7 @@ export function RemProvider({
 	children,
 }: RemProviderProps) {
 	const camera = useCamera();
-	const [rem, setRem] = useDebounceState(baseRem, { wait: 0.2, leading: true });
+	const [rem, setRem] = useDebounceState(baseRem, { wait: 0.2 });
 
 	/** 更新 Rem 值的计算函数 */
 	const update = () => {

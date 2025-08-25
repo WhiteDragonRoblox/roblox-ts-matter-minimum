@@ -14,7 +14,7 @@
 		},
 		"ReplicatedFirst": {
 			"Loading": {
-				"$path": "out/replicatedFirst/loading.client.lua"
+				"$path": "out/replicatedFirst/loading.client.luau"
 			}
 		},
 		"ReplicatedStorage": {
@@ -39,8 +39,8 @@
 			"$className": "StarterPlayer",
 			"StarterPlayerScripts": {
 				"$className": "StarterPlayerScripts",
-				"Game": {
-					"$path": "out/client/main.client.lua"
+				"client": {
+					"$path": "out/client"
 				}
 			}
 		},

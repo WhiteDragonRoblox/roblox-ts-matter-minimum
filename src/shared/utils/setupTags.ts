@@ -24,7 +24,18 @@ export function setupTags(world: World, state: ClientState): void {
 			}
 			const entity = model.GetAttribute(entityKey) as AnyEntity;
 			//print("inserting into", entity, tostring(component));
-			world.insert(entity, newComponent.patch(atts));
+			if (world.contains(entity)) {
+				world.insert(entity, newComponent.patch(atts));
+			} else {
+				warn(`Entity ${entity} doesn't exist, respawning for model ${model.Name}`);
+				// 如果实体不存在，重新生成
+				const id = world.spawn(
+					newComponent.patch(model.GetAttributes()),
+					Renderable({ model }),
+					Transform({ cf: model.GetPivot() }),
+				);
+				model.SetAttribute(entityKey, id);
+			}
 			return;
 		}
 		const id = world.spawn(

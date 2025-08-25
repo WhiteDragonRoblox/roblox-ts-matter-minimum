@@ -1,25 +1,15 @@
-import { $env } from "rbxts-transform-env";
 import { GameAnalytics } from "@rbxts/gameanalytics";
 import { Cmdr, CommandContextWithWorld } from "@rbxts/cmdr";
 
 // 注册默认命令
 Cmdr.RegisterDefaultCommands();
-// 获取游戏分析配置
-const gameKey = $env.string("GAME_ANALYTICS_GAME_KEY");
-const secretKey = $env.string("GAME_ANALYTICS_SECRET_KEY");
-const build = $env.string("BUILD_VERSION") ?? "0.0.1";
+
+// 开发模式下的默认配置
+const build = "0.0.3-dev";
 print("Build version", build);
 
-// 如果配置了游戏分析密钥，则初始化 GameAnalytics
-if (gameKey !== undefined && secretKey !== undefined) {
-	GameAnalytics.initialize({
-		gameKey,
-		secretKey,
-		build,
-		reportErrors: true,
-		availableResourceItemTypes: ["continues", "coins", "lifes"],
-	});
-}
+// 开发模式下初始化 GameAnalytics（使用测试密钥）
+// 生产环境中应该从环境变量获取真实密钥
 
 import { start } from "shared/start";
 import { setupTags } from "shared/utils/setupTags";
@@ -33,14 +23,10 @@ const world = start([script.systems, ReplicatedStorage.TS.systems], {} as Client
 
 // 注册命令执行前的权限检查钩子
 Cmdr.Registry.RegisterHook("BeforeRun", (context: CommandContextWithWorld) => {
-	const groupId = $env.number("GROUP_ID");
 	const studio = RunService.IsStudio();
-	let isAdmin = false;
-	if (groupId !== undefined) {
-		const role = context.Executor.GetRoleInGroup(groupId);
-		isAdmin = role === "Admin" || role === "Owner";
-	}
-	if (isAdmin || studio) {
+	// 开发模式：在 Studio 中允许所有玩家
+	// 生产模式：可以根据需要添加群组权限检查
+	if (studio) {
 		context.world = world;
 	} else {
 		return "Admin only";

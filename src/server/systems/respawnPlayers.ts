@@ -70,14 +70,11 @@ const respawnPlayers = (world: World) => {
 		for (const [, character] of useEvent(player, "CharacterAppearanceLoaded")) {
 			if (character) {
 				(async () => {
-					let model;
+					let model: any;
 					try {
 						model = await Promise.race([
-							promiseR15(character),
-							(async () => {
-								await Promise.delay(1);
-								throw "Character load timed out!";
-							})(),
+							promiseR15(character) as Promise<any>,
+							Promise.delay(1).then(() => Promise.reject("Character load timed out!")),
 						]);
 					} catch (err) {
 						warn("Error loading character, reloading!", err);
@@ -88,7 +85,7 @@ const respawnPlayers = (world: World) => {
 						player.LoadCharacter();
 						return;
 					}
-					model.Humanoid.BreakJointsOnDeath = true;
+					(model as Model & {Humanoid: Humanoid}).Humanoid.BreakJointsOnDeath = true;
 					world.insert(
 						id as AnyEntity,
 						playerState.patch({
@@ -101,8 +98,8 @@ const respawnPlayers = (world: World) => {
 					world.insert(
 						id as AnyEntity,
 						PlayerModel({
-							character: model,
-							humanoid: model.Humanoid,
+							character: model as Model,
+							humanoid: (model as Model & {Humanoid: Humanoid}).Humanoid,
 						}),
 					);
 					print("Character added", player.Name);
